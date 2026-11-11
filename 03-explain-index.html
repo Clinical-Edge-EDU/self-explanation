@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Say It Before Anyone Tells You</title>
+<style>
+  :root{
+    --green:#1E3A34; --green-deep:#16302B; --ink:#20302B; --muted:#5B6B64;
+    --paper:#FFFFFF; --wash:#F4F6F5; --line:#DDE4E1;
+    --accent:#F2C94C; --accent-soft:#FBF0D2;
+    --right:#2E7D4F; --right-soft:#EAF4EE;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+  body{margin:0;font-family:Georgia,"Times New Roman",serif;color:var(--ink);background:var(--wash);line-height:1.55}
+  header.hero{background:var(--green);color:#fff;padding:2.4rem 1.2rem 2rem}
+  .wrap{max-width:840px;margin:0 auto}
+  .kicker{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.78rem;letter-spacing:.08em;opacity:.85;margin:0 0 .5rem}
+  header.hero h1{font-size:1.9rem;line-height:1.2;margin:0 0 .6rem;font-weight:700}
+  header.hero p.lede{margin:0;max-width:60ch;opacity:.93}
+  main{padding:1.6rem 1.2rem 4rem}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:1.5rem 1.6rem;margin:1.2rem 0}
+  .stagechip{display:inline-block;background:var(--accent-soft);border:1px solid var(--accent);border-radius:999px;padding:.15rem .8rem;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.78rem;font-weight:600;color:var(--green-deep);margin-bottom:.6rem}
+  h2{font-size:1.35rem;margin:.2rem 0 .6rem}
+  h3{font-size:1.05rem;margin:1.2rem 0 .4rem}
+  .keybar{background:var(--accent-soft);border-left:5px solid var(--accent);padding:.7rem .9rem;border-radius:6px;margin:1rem 0;font-size:.97rem}
+  .strategy{background:var(--green);color:#fff;border-radius:10px;padding:1.2rem 1.3rem;margin:.4rem 0 1.2rem}
+  .strategy .label{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.74rem;letter-spacing:.09em;font-weight:700;color:var(--accent);margin:0 0 .35rem}
+  .strategy h3{margin:0 0 .45rem;font-size:1.2rem;color:#fff}
+  .strategy p{margin:.4rem 0;opacity:.95}
+  .case{background:var(--wash);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;margin:.9rem 0}
+  .case p{margin:.3rem 0}
+  .vitals{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.5rem;margin-top:.7rem}
+  .vital{background:#fff;border:1px solid var(--line);border-radius:6px;padding:.45rem .6rem;font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.85rem}
+  .vital b{display:block;font-size:1rem;color:var(--green-deep)}
+  .ask{border:1px solid var(--line);border-radius:9px;padding:1rem 1.1rem;margin:.9rem 0;background:#fff}
+  .ask .q{font-weight:700;margin:0 0 .25rem;font-size:1.06rem}
+  .ask .hint{font-size:.89rem;color:var(--muted);margin:0 0 .55rem}
+  textarea{width:100%;font-family:Georgia,serif;font-size:1rem;padding:.6rem .7rem;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);min-height:120px;resize:vertical}
+  textarea:disabled{background:var(--wash);color:var(--muted)}
+  .wc{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.8rem;color:var(--muted);margin-top:.3rem}
+  .model{display:none;margin-top:1.1rem}
+  .model.show{display:block}
+  .model .mbox{background:var(--right-soft);border-left:4px solid var(--right);border-radius:6px;padding:.9rem 1rem;font-size:.97rem}
+  .model .mbox b{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.76rem;letter-spacing:.05em;display:block;margin-bottom:.3rem;color:var(--green-deep)}
+  .model .mbox p{margin:.5rem 0}
+  .checklist{margin-top:1.1rem}
+  .checklist p.lab{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.86rem;font-weight:700;color:var(--green-deep);margin:0 0 .45rem}
+  .ck{display:flex;gap:.65rem;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:.65rem .8rem;margin:.4rem 0;cursor:pointer;background:#fff}
+  .ck:hover{border-color:var(--green)}
+  .ck input{margin-top:.2rem;accent-color:var(--green);width:1.05rem;height:1.05rem;flex:none}
+  .ck.on{border-color:var(--right);background:var(--right-soft)}
+  .ck span b{display:block;font-size:1rem}
+  .ck span i{display:block;font-style:normal;font-size:.88rem;color:var(--muted);margin-top:.1rem}
+  button{font-family:-apple-system,"Segoe UI",Roboto,sans-serif;font-size:.95rem;font-weight:600;border-radius:8px;border:1px solid var(--green);padding:.6rem 1.2rem;cursor:pointer}
+  button.primary{background:var(--green);color:#fff}
+  button.primary:hover{background:var(--green-deep)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  #closing{display:none}
+  .gapbox{background:var(--wash);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem;margin:.8rem 0}
+  .gapbox ul{margin:.4rem 0 0;padding-left:1.2rem}
+  .gapbox li{margin:.2rem 0}
+  .note{font-size:.85rem;color:var(--muted)}
+  .srmsg{position:absolute;left:-9999px}
+  footer{padding:1.5rem 1.2rem 2.5rem;color:var(--muted);font-size:.85rem;text-align:center}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">BEFORE THE CHECKPOINT</p>
+    <h1>Say it before anyone tells you</h1>
+    <p class="lede">You have just read how the body compensates and what that compensation costs. Before you answer anything, explain one case in your own words. It takes about five minutes.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="card">
+    <div class="strategy">
+      <p class="label">THE STRATEGY</p>
+      <h3>Explaining it in your own words</h3>
+      <p>Say why something happens, out loud or in writing, before you check whether you are right. Recognizing a correct explanation is easy. Producing one is not, and only producing one tells you whether you have the reasoning or only the words.</p>
+      <p>You will find out where your explanation falters. That point is the gap, and it is almost never where you expected.</p>
+    </div>
+
+    <h2>Explain this client</h2>
+
+    <div class="case">
+      <p><strong>The situation.</strong> A client with a hemoglobin of 8 grams per deciliter is sitting up in bed, alert and comfortable, and says they feel fine. Walking to the bathroom leaves them winded and they need to stop halfway.</p>
+      <div class="vitals">
+        <div class="vital">Hemoglobin <b>8 g/dL</b></div>
+        <div class="vital">Oxygen saturation <b>98%</b></div>
+        <div class="vital">Heart rate <b>104/min</b></div>
+        <div class="vital">At rest <b>Comfortable</b></div>
+        <div class="vital">On exertion <b>Breathless</b></div>
+      </div>
+    </div>
+
+    <div class="ask">
+      <p class="q">The oxygen saturation is 98 percent and the client feels fine at rest. Why is that evidence of compensation rather than evidence that the anemia is not affecting them?</p>
+      <p class="hint">Write it as if you were explaining it to a classmate who just said the saturation is normal so the client must be fine. Three or four sentences. No notes, no scrolling back.</p>
+      <textarea id="expl" placeholder="Because oxygen delivery is being held up by..."></textarea>
+      <p class="wc" id="wc">0 words</p>
+    </div>
+
+    <p style="margin-top:1rem">
+      <button class="primary" id="revealbtn" type="button">Compare with a full explanation</button>
+      <span class="note" id="hint2" style="margin-left:.6rem">Write at least a few sentences first.</span>
+    </p>
+    <p class="note" id="err" role="alert" hidden></p>
+
+    <div class="model" id="model">
+      <div class="mbox">
+        <b>A FULL EXPLANATION</b>
+        <p>The disruption is a loss of carrying capacity. With a hemoglobin of 8, every unit of blood carries less oxygen than it should, so the body has to move more blood to deliver the same amount. That is what the heart rate of 104 is doing. Cardiac output has risen to make up the shortfall, and at rest it succeeds, which is why the client is comfortable and says they feel fine.</p>
+        <p>The saturation of 98 percent is not a contradiction, because it measures the wrong thing. It reports the percentage of available hemoglobin that is carrying oxygen, not how much hemoglobin there is. Nearly all of a small supply is still nearly all of a small supply. The number can stay perfect while delivery falls.</p>
+        <p>The compensation is also already spending. A heart working harder at rest has less left for anything else, and that is what the walk to the bathroom exposed. Demand rose, the only available response was to raise output further, and there was not enough margin left. Breathlessness on exertion is the first place the cost becomes visible.</p>
+      </div>
+
+      <div class="checklist" id="checklist">
+        <p class="lab">Tick everything your explanation actually said. Be strict with yourself.</p>
+        <label class="ck"><input type="checkbox" data-g="Naming the disruption as reduced oxygen-carrying capacity, not reduced oxygen"><span><b>I named the disruption</b><i>Less hemoglobin means less carrying capacity</i></span></label>
+        <label class="ck"><input type="checkbox" data-g="Explaining the raised heart rate as the compensation, not as a separate problem"><span><b>I explained what the heart rate is doing</b><i>Moving more blood to deliver the same oxygen</i></span></label>
+        <label class="ck"><input type="checkbox" data-g="Explaining why a saturation of 98 percent can sit alongside a hemoglobin of 8"><span><b>I explained why the saturation is still 98 percent</b><i>It measures the share of hemoglobin carrying oxygen, not how much there is</i></span></label>
+        <label class="ck"><input type="checkbox" data-g="Saying that comfort at rest is the compensation succeeding rather than the absence of a problem"><span><b>I said comfort at rest is the compensation working</b><i>Not evidence that nothing is wrong</i></span></label>
+        <label class="ck"><input type="checkbox" data-g="Saying that the compensation is already spending reserve at rest"><span><b>I said the compensation costs something</b><i>A heart already working harder has less left over</i></span></label>
+        <label class="ck"><input type="checkbox" data-g="Connecting the breathlessness on exertion to the limit of the compensation"><span><b>I explained the breathlessness on the walk</b><i>Demand rose past what the response could cover</i></span></label>
+        <p style="margin-top:1rem"><button class="primary" id="donebtn" type="button">See what my explanation was missing</button></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="closing" aria-live="polite">
+    <span class="stagechip">WHAT THAT TOLD YOU</span>
+    <h2 id="verdicthead"></h2>
+    <p id="verdictbody"></p>
+
+    <div class="gapbox" id="gapbox" hidden>
+      <strong>Your explanation did not include</strong>
+      <ul id="gaplist"></ul>
+      <p class="note" style="margin:.5rem 0 0">These pieces only, not the whole section. Nothing is saved, so write them down.</p>
+    </div>
+
+    <h3>Why this works</h3>
+    <p>Explaining forces you to build the reasoning, not just recognize it. When you read a correct explanation, your brain registers that it makes sense, and that feeling is almost indistinguishable from understanding. Writing your own removes the option. You either have the links between the findings or you discover, mid-sentence, that you do not.</p>
+    <p>The place your explanation stopped is the useful part. It is a specific missing connection, which you can go and get, rather than a vague sense that the topic needs more work.</p>
+
+    <h3>Carry it forward</h3>
+    <p>After you read anything that explains why something happens, close the book and explain it to someone, or to an empty room, or on paper. When you run out of words, that is the thing to go back for. Then close the book and explain it again.</p>
+
+    <div class="keybar"><strong>Now take the checkpoint.</strong> It asks which findings count as evidence of compensation, in a different client with a different disruption. The reasoning you just built is the reasoning it wants. Commit to your answers before you look at the feedback.</div>
+  </section>
+
+</main>
+
+<footer>Part 2 &middot; Learning to Study Nursing Content: An Active Approach &middot; Nothing entered on this page is stored or transmitted.</footer>
+<div class="srmsg" role="status" aria-live="polite" id="srlive"></div>
+
+<script>
+(function(){
+  "use strict";
+  var ta=document.getElementById('expl'), wc=document.getElementById('wc');
+  function words(){ var t=ta.value.trim(); return t? t.split(/\s+/).length : 0; }
+  function announce(m){ document.getElementById('srlive').textContent=m; }
+
+  ta.addEventListener('input', function(){
+    var n=words();
+    wc.textContent = n + (n===1?' word':' words');
+  });
+
+  document.querySelectorAll('.ck input').forEach(function(i){
+    i.addEventListener('change', function(){ i.closest('.ck').classList.toggle('on', i.checked); });
+  });
+
+  document.getElementById('revealbtn').addEventListener('click', function(){
+    var btn=this, err=document.getElementById('err');
+    if(words() < 25){
+      err.textContent='Write at least a few sentences first. Reading a full explanation before you have built your own replaces the work with recognition, which is the habit this is meant to break.';
+      err.hidden=false;
+      announce('Write more before comparing.');
+      return;
+    }
+    err.hidden=true;
+    ta.disabled=true;
+    document.getElementById('model').classList.add('show');
+    btn.disabled=true; btn.textContent='Compare, then tick what you said';
+    document.getElementById('hint2').textContent='Tick only what your own version actually contained.';
+    document.getElementById('model').scrollIntoView({behavior:'smooth',block:'start'});
+    announce('A full explanation is now shown. Tick what your own version covered.');
+  });
+
+  document.getElementById('donebtn').addEventListener('click', function(){
+    var boxes=Array.prototype.slice.call(document.querySelectorAll('.ck input'));
+    var gaps=boxes.filter(function(b){ return !b.checked; }).map(function(b){ return b.dataset.g; });
+    var got=boxes.length-gaps.length;
+
+    var head=document.getElementById('verdicthead'), body=document.getElementById('verdictbody');
+    if(gaps.length===0){
+      head.textContent='Your explanation held together';
+      body.textContent='You linked every finding back to one disruption and said why a normal-looking number can sit on top of a real problem. That is reasoning, not recall, and it is what the checkpoint is about to ask for.';
+    } else if(got===0){
+      head.textContent='Your explanation and the full one did not overlap';
+      body.textContent='That is worth knowing now rather than during an exam. The section made sense while you were reading it, and the gap between following an explanation and producing one is exactly what this activity exists to expose. The specific links you are missing are listed below, and they are few enough to go and get.';
+    } else if(gaps.length<=2){
+      head.textContent='Your explanation was mostly there';
+      body.textContent='Most of the reasoning was yours. What is listed below are the connections your version did not make, and they are the difference between describing the findings and explaining them.';
+    } else {
+      head.textContent='Your explanation covered part of it';
+      body.textContent='You had some of the links. The ones below did not appear in your version, and each one is a connection between a finding and the response producing it rather than a fact to memorize.';
+    }
+
+    var box=document.getElementById('gapbox'), list=document.getElementById('gaplist');
+    if(gaps.length){
+      list.innerHTML='';
+      gaps.forEach(function(g){ var li=document.createElement('li'); li.textContent=g; list.appendChild(li); });
+      box.hidden=false;
+    } else { box.hidden=true; }
+
+    this.disabled=true; this.textContent='Your result is below';
+    var c=document.getElementById('closing');
+    c.style.display='block';
+    c.scrollIntoView({behavior:'smooth',block:'start'});
+    announce('Your result is shown below.');
+  });
+})();
+</script>
+</body>
+</html>
